@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿#define DYNAMIC_KEYWORD_SUPPORTED // If this line is commented out, the object keyword will be used rather than the dynamic keyword.
+
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json;
@@ -7,13 +9,15 @@ namespace Gemsnake
 {
     public abstract class Evaluator {
         public const string Author = "Joyless";
-        public const string Version = "1.0.0";
+        public const string Version = "1.0.1";
 
         protected const float ReadFrequency = 60f; // How many times per second the client and server should read the network stream for new messages
         protected readonly static Encoding MessageEncoding = Encoding.UTF8; // The text encoding of the messages
 
         protected const int BufferSize = 8192; // The maximum number of bytes per ReadAsync; uses memory but more performant for long messages
         protected const byte EndOfLengthByte = 255; // Which byte should be reserved to mark the end of the message length (LengthBytes EndOfLengthByte MessageBytes)
+
+        // const Type DynamicType = typeof(dynamic);
 
         protected TcpClient? Client;
         protected NetworkStream? Stream;
@@ -32,8 +36,13 @@ namespace Gemsnake
         public class EvaluationResult {
             public readonly string? ErrorMessage;
             public readonly long? ErrorLine;
+#if DYNAMIC_KEYWORD_SUPPORTED
             public readonly dynamic? ReturnValue;
             public EvaluationResult(string? ErrorMessage, long? ErrorLine, dynamic? ReturnValue) {
+#else
+            public readonly object? ReturnValue;
+            public EvaluationResult(string? ErrorMessage, long? ErrorLine, object? ReturnValue) {
+#endif
                 this.ErrorMessage = ErrorMessage;
                 this.ErrorLine = ErrorLine;
                 this.ReturnValue = ReturnValue;
@@ -58,10 +67,15 @@ namespace Gemsnake
                         Responses.RemoveAt(FindResponse);
                         Response = Response[EvaluateGuidPrefix.Length..];
                         // Return the response
-                        Dictionary<string, dynamic?> RawResponse = JsonConvert.DeserializeObject<Dictionary<string, dynamic?>>(Response) ?? throw new Exception("Response was not in the correct format");
+                        const string BadFormatException = "Response was not in the correct format";
+#if DYNAMIC_KEYWORD_SUPPORTED
+                        Dictionary<string, dynamic?> RawResponse = JsonConvert.DeserializeObject<Dictionary<string, dynamic?>>(Response) ?? throw new Exception(BadFormatException);
+#else
+                        Dictionary<string, object?> RawResponse = JsonConvert.DeserializeObject<Dictionary<string, object?>>(Response) ?? throw new Exception(BadFormatException);
+#endif
                         return new EvaluationResult(
-                            RawResponse["error_message"],
-                            RawResponse["error_line"],
+                            (string?)RawResponse["error_message"],
+                            (long?)RawResponse["error_line"],
                             RawResponse["result"]
                         );
                     }
