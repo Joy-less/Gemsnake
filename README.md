@@ -1,6 +1,6 @@
 # Gemsnake
 
-![Image]("Resources/Gemsnake Mini.png")
+![Image](Resources/GemsnakeMini.png)
 
 Are you coding in C#, but want the flexibility of Ruby or the libraries of Python? Gemsnake lets you have all three from the comfort of C#, without needing to install Python or Ruby.
 
