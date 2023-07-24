@@ -29,7 +29,7 @@ await Python.EvaluateAsync("print('running in the background')");
 ## Setup
 1. Download `Gemsnake.zip` from the latest release.
 2. Extract the zip and move `Evaluator.cs`, `RubyEvaluator.cs` and `PythonEvaluator.cs` into your project files.
-3. Move `RubyEvaluator.exe`, and `PythonEvaluator.exe` into your binary output folder.
+3. Move `RubyEvaluator.exe` and `PythonEvaluator.exe` into your binary output folder.
 
 ## Using gems/packages
 If you want to use gems/packages, or upgrade the language version:
@@ -43,5 +43,5 @@ If you want to use gems/packages, or upgrade the language version:
 
 ## How it works
 - Gemsnake works by creating an executable ahead of time using [Ocran](https://github.com/Midscore-IO/ocran) and [PyInstaller](https://github.com/pyinstaller/pyinstaller) for Ruby and Python respectively.
-- These executables can run code from a string using Ruby's eval() and Python's exec(). As Python's exec() does not return a value, the code input is wrapped into a function and called.
+- These executables can run code from a string using Ruby's `eval()` and Python's `exec()`. As Python's `exec()` does not return a value, the code input is wrapped into a function and called.
 - The C# program will start these executables as processes running in the background. They communicate over a localhost TCP connection, and you can specify over which port if you desire.
