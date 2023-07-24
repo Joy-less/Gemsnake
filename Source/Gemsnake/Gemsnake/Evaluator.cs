@@ -1,9 +1,14 @@
 ﻿#define DYNAMIC_KEYWORD_SUPPORTED // If this line is commented out, the object keyword will be used rather than the dynamic keyword.
+#nullable enable
 
+using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Gemsnake
 {
@@ -16,8 +21,6 @@ namespace Gemsnake
 
         protected const int BufferSize = 8192; // The maximum number of bytes per ReadAsync; uses memory but more performant for long messages
         protected const byte EndOfLengthByte = 255; // Which byte should be reserved to mark the end of the message length (LengthBytes EndOfLengthByte MessageBytes)
-
-        // const Type DynamicType = typeof(dynamic);
 
         protected TcpClient? Client;
         protected NetworkStream? Stream;
@@ -96,7 +99,8 @@ namespace Gemsnake
             // Run the process with arguments
             Process Process = new() {
                 StartInfo = new ProcessStartInfo() {
-                    FileName = ProcessPath
+                    FileName = ProcessPath,
+                    WindowStyle = ProcessWindowStyle.Hidden
                 }
             };
             foreach (string Argument in Arguments) {

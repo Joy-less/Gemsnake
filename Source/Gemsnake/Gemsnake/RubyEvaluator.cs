@@ -1,4 +1,6 @@
-﻿namespace Gemsnake
+﻿using System.Threading.Tasks;
+
+namespace Gemsnake
 {
     public class RubyEvaluator : Evaluator
     {
