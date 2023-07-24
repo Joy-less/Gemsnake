@@ -1,6 +1,6 @@
 # Gemsnake
 
-![Image](Resources/Gemsnake.png)
+![Image]("Resources/Gemsnake Mini.png")
 
 Are you coding in C#, but want the flexibility of Ruby or the libraries of Python? Gemsnake lets you have all three from the comfort of C#, without needing to install Python or Ruby.
 
@@ -26,9 +26,17 @@ You can also run code asynchronously:
 await Python.EvaluateAsync("print('running in the background')");
 ```
 
+## How to use
+1. Download `Gemsnake.dll`, `Newtonsoft.Json.dll`, `RubyEvaluator.exe`, and `PythonEvaluator.exe` from the latest release.
+2. If you want to rebuild the evaluator executables, download `Gemsnake.Evaluator.Build.Tools.zip` and run the build scripts. 
+3. Move `Gemsnake.dll` and `Newtonsoft.Json.dll` into your project folder alongside your C# scripts. Move `RubyEvaluator.exe`, and `PythonEvaluator.exe` into your binary output folder.
+4. Right click your project in Visual Studio and click Add -> Project Reference. Click Browse and open the DLLs. Make sure they are checked and click OK.
+5. If you did it right, you can type `using Gemsnake;` in your program.
+
 ## Objectives
 - Gemsnake is designed as a replacement for IronRuby and IronPython, which have been long discontinued.
 - It's designed to help you run Ruby & Python code while creating an interface in C#.
+- It targets .NET 7.0.
 
 ## How it works
 - Gemsnake works by creating an executable ahead of time using [Ocran](https://github.com/Midscore-IO/ocran) and [PyInstaller](https://github.com/pyinstaller/pyinstaller) for Ruby and Python respectively.
