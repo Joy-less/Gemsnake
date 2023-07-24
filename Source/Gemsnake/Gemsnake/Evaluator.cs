@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Gemsnake
 {
-    internal abstract class Evaluator {
+    public abstract class Evaluator {
         public const string Author = "Joyless";
         public const string Version = "1.0.0";
 
