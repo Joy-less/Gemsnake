@@ -4,7 +4,8 @@ namespace Gemsnake
 {
     public class RubyEvaluator : Evaluator
     {
-        public RubyEvaluator(int Port = 29420, string RubyExecutablePath = "RubyEvaluator.exe") {
+        public RubyEvaluator(string RubyExecutablePath = "RubyEvaluator.exe", int Port = 0) {
+            if (Port == 0) Port = GetFreeTcpPort();
             ExecutableProcess = RunProcess(RubyExecutablePath, Port.ToString());
             Task.Run(() => Listen(Port));
         }

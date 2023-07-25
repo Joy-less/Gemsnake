@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace Gemsnake
 {
     public abstract class Evaluator {
         public const string Author = "Joyless";
-        public const string Version = "1.0.2";
+        public const string Version = "1.0.3";
 
         protected const float ReadFrequency = 60f; // How many times per second the client and server should read the network stream for new messages
         protected readonly static Encoding MessageEncoding = Encoding.UTF8; // The text encoding of the messages
@@ -117,6 +118,13 @@ namespace Gemsnake
         }
         protected static double GetUnixTimeStamp() {
             return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() / 1000d;
+        }
+        protected static int GetFreeTcpPort() {
+            TcpListener Listener = new(IPAddress.Loopback, 0);
+            Listener.Start();
+            int Port = ((IPEndPoint)Listener.LocalEndpoint).Port;
+            Listener.Stop();
+            return Port;
         }
         protected static byte[] CreatePacket(string Message) {
             // Get message as bytes
