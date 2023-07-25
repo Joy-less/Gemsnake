@@ -14,7 +14,7 @@ namespace Gemsnake
 {
     public abstract class Evaluator {
         public const string Author = "Joyless";
-        public const string Version = "1.0.1";
+        public const string Version = "1.0.2";
 
         protected const float ReadFrequency = 60f; // How many times per second the client and server should read the network stream for new messages
         protected readonly static Encoding MessageEncoding = Encoding.UTF8; // The text encoding of the messages
@@ -103,9 +103,11 @@ namespace Gemsnake
                     WindowStyle = ProcessWindowStyle.Hidden
                 }
             };
+            /*ArgumentList is known to cause issues.
             foreach (string Argument in Arguments) {
                 Process.StartInfo.ArgumentList.Add(Argument);
-            }
+            }*/
+            Process.StartInfo.Arguments = string.Join(" ", Arguments);
             Process.Start();
 
             return Process;
